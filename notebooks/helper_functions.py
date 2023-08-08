@@ -41,9 +41,10 @@ def plot_decision_boundary(model: torch.nn.Module, X: torch.Tensor, y: torch.Ten
     Source - https://madewithml.com/courses/foundations/neural-networks/ (with modifications)
     """
     # Put everything to CPU (works better with NumPy + Matplotlib)
-    model_cpu = type(model)()  # This creates a new instance of the same type as your model
-    model_cpu.load_state_dict(model.state_dict())  # This copies the parameters and buffers
-    model_cpu = model_cpu.to('cpu')
+    torch.save(model, 'temp_model.pth')
+    model_cpu = torch.load('temp_model.pth', map_location='cpu')
+    os.remove('temp_model.pth')
+
     X, y = X.to("cpu"), y.to("cpu")
 
     # Setup prediction boundaries and grid
